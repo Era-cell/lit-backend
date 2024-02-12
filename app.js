@@ -7,9 +7,9 @@ const app = express()
 
 app.use(express.json())
 
-app.use(cors({ origin: "https://guileless-jalebi-432852.netlify.app/", credentials: true }));
+app.use(cors({ origin: "https://guileless-jalebi-432852.netlify.app", credentials: true }));
 
-var allowCrossDomain = function(req, res, next) {
+var allowCrossDomain = function (req, res, next) {
     // res.header('Access-Control-Allow-Origin', "*");
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
@@ -18,7 +18,7 @@ var allowCrossDomain = function(req, res, next) {
 
 app.use(allowCrossDomain);
 
-  
+
 
 // respond with "hello world" when a GET request is made to the homepage
 app.get('/', (req, res) => {
@@ -27,14 +27,14 @@ app.get('/', (req, res) => {
 
 app.post('/', (req, res) => {
     const [accept, recommendations] = req.body
-    try{
+    try {
         console.log(recommendations)
         agent.update(accept, recommendations)
         res.status(200).send("done")
-    }catch(error){
+    } catch (error) {
         res.status(500).send("Error in the post request")
     }
-       
+
 })
 
 app.listen(5000, () => {
