@@ -1,0 +1,11 @@
+# Top-level configuration
+
+
+name = "lit-project"
+main = "app.js"
+compatibility_date = "2024-02-22"
+
+# compatibility_flags = [ "nodejs_compat" ]
+node_compat = true
+[build]
+command = "npm install"

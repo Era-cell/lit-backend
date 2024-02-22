@@ -2,12 +2,15 @@ import express from "express";
 import cors from "cors";
 import { serialized_agent, agent } from "./controllers/algo.js";
 import pgp from 'pg-promise';
+import fs from 'fs';
+import util from 'util';
+import { exec } from 'child_process';
 
 const app = express()
 
 app.use(express.json())
 
-app.use(cors({ origin: "https://guileless-jalebi-432852.netlify.app", credentials: true }));
+app.use(cors({ origin: "https://web-page-1-8td.pages.dev/", credentials: true }));
 
 var allowCrossDomain = function (req, res, next) {
     // res.header('Access-Control-Allow-Origin', "*");
@@ -15,7 +18,7 @@ var allowCrossDomain = function (req, res, next) {
     // res.header('Access-Control-Allow-Headers', 'Content-Type');
     res.setHeader(
         "Access-Control-Allow-Origin",
-        "https://guileless-jalebi-432852.netlify.app"
+        "https://web-page-1-8td.pages.dev/"
     );
     res.setHeader(
         "Access-Control-Allow-Methods",
@@ -33,12 +36,38 @@ var allowCrossDomain = function (req, res, next) {
 }
 app.use(allowCrossDomain);
 
+const writeFileAsync = util.promisify(fs.writeFile);
+const filePath = 'dist/src/assets/model.js';
+
+setInterval(async () => {
+    try {
+        // Read the file content
+        const newContent = `export const model = ${util.inspect(serialized_agent, { depth: null })};`;
+
+        // Write the new content to the file using promise-based writeFile
+        await writeFileAsync(filePath, newContent, 'utf8');
+
+        // Execute the command after modifying the file
+        const command = 'CLOUDFLARE_ACCOUNT_ID=175feb9970fba9d1708daac3b2c7494d npx wrangler pages publish dist --project-name=web-page-1-8td.pages.dev';
+        exec(command, (execError, stdout, stderr) => {
+            if (execError) {
+                console.error(`Error executing command: ${execError.message}`);
+                return;
+            }
+            if (stderr) {
+                console.error(`stderr: ${stderr}`);
+                return;
+            }
+            console.log(`stdout: ${stdout}`);
+        });
+    } catch (error) {
+        console.error(`Error: ${error.message}`);
+    }
+}, 10000); // 10 seconds for testing, replace with 7200000 for 7200 seconds
 
 
-// respond with "hello world" when a GET request is made to the homepage
-app.get('/', (req, res) => {
-    res.json({ 'agent': serialized_agent });
-});
+
+console.log(serialized_agent)
 
 app.post('/', (req, res) => {
     const [accept, recommendations] = req.body
