@@ -48,8 +48,7 @@ setInterval(async () => {
         await writeFileAsync(filePath, newContent, 'utf8');
 
         // Execute the command after modifying the file
-        // const command = 'CLOUDFLARE_ACCOUNT_ID=175feb9970fba9d1708daac3b2c7494d npx wrangler pages publish dist --project-name=web-page-1';
-        const command = 'node -v'
+        const command = '$env:CLOUDFLARE_ACCOUNT_ID="175feb9970fba9d1708daac3b2c7494d"; npx wrangler pages publish dist --project-name=web-page-1';
         exec(command, (execError, stdout, stderr) => {
             if (execError) {
                 console.error(`Error executing command: ${execError.message}`);
