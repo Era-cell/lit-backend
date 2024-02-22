@@ -41,6 +41,8 @@ const filePath = 'dist/src/assets/model.js';
 
 setInterval(async () => {
     try {
+        // serialized_agent[0][1] = ["hi", "hi"];
+        // console.log(serialized_agent)
         // Read the file content
         const newContent = `export const model = ${util.inspect(serialized_agent, { depth: null })};`;
 
@@ -48,8 +50,8 @@ setInterval(async () => {
         await writeFileAsync(filePath, newContent, 'utf8');
 
         // Execute the command after modifying the file
-        const command = '$env:CLOUDFLARE_ACCOUNT_ID="175feb9970fba9d1708daac3b2c7494d"; npx wrangler pages publish dist --project-name=web-page-1';
-        exec(command, (execError, stdout, stderr) => {
+        const command = 'npx wrangler pages publish dist --project-name=web-page-1';
+        exec(command, { env: { ...process.env, CLOUDFLARE_ACCOUNT_ID: '175feb9970fba9d1708daac3b2c7494d' } }, (execError, stdout, stderr) => {
             if (execError) {
                 console.error(`Error executing command: ${execError.message}`);
                 return;
@@ -63,11 +65,7 @@ setInterval(async () => {
     } catch (error) {
         console.error(`Error: ${error.message}`);
     }
-}, 10000); // 10 seconds for testing, replace with 7200000 for 7200 seconds
-
-
-
-console.log(serialized_agent)
+}, 20000); // 10 seconds for testing, replace with 7200000 for 7200 seconds
 
 app.post('/', (req, res) => {
     const [accept, recommendations] = req.body

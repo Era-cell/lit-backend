@@ -1,7 +1,7 @@
 export const model = [
   [
     '{"oracleStates":[{"learningRate":0.1,"regularizer":0,"actionIdFeatures":true,"actionFeatures":true,"contextActionIdInteractions":true,"contextActionFeatureInteractions":true,"useInversePropensityWeighting":true,"laplaceSmoothing":0.01,"targetLabel":"click","name":"click","oracleWeight":1,"weights":{}}],"temperature":0.3,"slateSize":1}',
-    [ 'mt1', 'mt2', 'mt3', 'mt4', 'mt5', 'mt6' ]
+    [ 'hi', 'hi' ]
   ],
   [
     '{"oracleStates":[{"learningRate":0.1,"regularizer":0,"actionIdFeatures":true,"actionFeatures":true,"contextActionIdInteractions":true,"contextActionFeatureInteractions":true,"useInversePropensityWeighting":true,"laplaceSmoothing":0.01,"targetLabel":"click","name":"click","oracleWeight":1,"weights":{}}],"temperature":0.3,"slateSize":1}',
