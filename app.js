@@ -39,7 +39,7 @@ app.use(allowCrossDomain);
 const writeFileAsync = util.promisify(fs.writeFile);
 const filePath = 'dist/src/assets/model.js';
 
-process.env.CLOUDFLARE_ACCOUNT_ID = '175feb9970fba9d1708daac3b2c7494d';
+// process.env.CLOUDFLARE_ACCOUNT_ID = '175feb9970fba9d1708daac3b2c7494d';
 setInterval(async () => {
     try {
         // serialized_agent[0][1] = ["hi", "hi"];
