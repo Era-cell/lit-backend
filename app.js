@@ -51,7 +51,7 @@ setInterval(async () => {
 
         // Execute the command after modifying the file
         const command = 'npx wrangler pages publish dist --project-name=web-page-1';
-        exec(command, { env: { ...process.env, CLOUDFLARE_ACCOUNT_ID: '175feb9970fba9d1708daac3b2c7494d' } }, (execError, stdout, stderr) => {
+        exec(command, (execError, stdout, stderr) => {
             if (execError) {
                 console.error(`Error executing command: ${execError.message}`);
                 return;
