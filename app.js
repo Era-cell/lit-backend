@@ -39,6 +39,7 @@ app.use(allowCrossDomain);
 const writeFileAsync = util.promisify(fs.writeFile);
 const filePath = 'dist/src/assets/model.js';
 
+process.env.CLOUDFLARE_ACCOUNT_ID = '175feb9970fba9d1708daac3b2c7494d';
 setInterval(async () => {
     try {
         // serialized_agent[0][1] = ["hi", "hi"];
@@ -50,7 +51,7 @@ setInterval(async () => {
         await writeFileAsync(filePath, newContent, 'utf8');
 
         // Execute the command after modifying the file
-        const command = 'npx wrangler pages publish dist --project-name=web-page-1';
+        const command = 'npx wrangler pages deploy dist --project-name=web-page-1';
         exec(command, (execError, stdout, stderr) => {
             if (execError) {
                 console.error(`Error executing command: ${execError.message}`);
