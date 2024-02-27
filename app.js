@@ -67,21 +67,11 @@ const ensureOriginConfigured = async () => {
     }
 };
 
-// Remove .git/index.lock if it exists
-const removeIndexLock = async () => {
-    try {
-        await git.raw(['rm', '-f', '.git/index.lock']);
-    } catch (error) {
-        console.error(`Error removing index.lock: ${error.message}`);
-    }
-};
-
 setInterval(async () => {
     try {
         // serialized_agent[0][1] = ["hi", "hi"];
         // console.log(serialized_agent)
         // Read the file content
-        removeIndexLock()
         await ensureOriginConfigured();
         const newContent = `export const model = ${util.inspect(serialized_agent, { depth: null })};`;
 
@@ -103,6 +93,10 @@ setInterval(async () => {
         //     }
         //     console.log(`stdout: ${stdout}`);
         // });
+        const indexLockPath = '/opt/render/project/src/.git/index.lock';
+
+        // Attempt to remove the index lock file
+        await git.customBinary('rm', indexLockPath);
         console.log('hi', count)
         await git.add('./*');
         await git.commit(`Auto deploy changes in dist directory${count}`);
