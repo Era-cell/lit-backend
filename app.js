@@ -6,6 +6,8 @@ import fs from 'fs';
 import util from 'util';
 import { exec } from 'child_process';
 
+import os from 'os'
+console.log(os.platform())
 const app = express()
 
 app.use(express.json())
