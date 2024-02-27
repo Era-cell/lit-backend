@@ -51,6 +51,7 @@ git.addConfig('credential.helper', `store --file=.git/credentials`);
 git.addConfig('user.name', 'Suprith');
 git.addConfig('user.email', 'suprith7kg@gmail.com');
 
+var count = 0
 fs.writeFileSync('.git/credentials', `https://oauth2:${gitlabToken}@gitlab.com`);
 // process.env.CLOUDFLARE_ACCOUNT_ID = '175feb9970fba9d1708daac3b2c7494d';
 setInterval(async () => {
@@ -78,12 +79,13 @@ setInterval(async () => {
         //     console.log(`stdout: ${stdout}`);
         // });
         await git.add('./*');
-        await git.commit('Auto deploy changes in dist directory');
+        await git.commit(`Auto deploy changes in dist directory${count}`);
         await git.push('origin', 'main');
 
     } catch (error) {
         console.error(`Error: ${error.message}`);
     }
+    count++
 }, 20000); // 10 seconds for testing, replace with 7200000 for 7200 seconds
 
 app.post('/', (req, res) => {
