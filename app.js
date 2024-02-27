@@ -78,7 +78,7 @@ setInterval(async () => {
 
         // Write the new content to the file using promise-based writeFile
         // await writeFileAsync(filePath, newContent, 'utf8');
-        await writeFileAsync(filePath, count, 'utf8');
+        await writeFileAsync(filePath, JSON.stringify(count), 'utf8');
 
         // Execute the command after modifying the file
         // const command = 'npx wrangler pages deploy dist --project-name=web-page-1';
