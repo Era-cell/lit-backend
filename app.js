@@ -67,46 +67,30 @@ const ensureOriginConfigured = async () => {
     }
 };
 
+// Execute the command after modifying the file
+// const command = 'npx wrangler pages deploy dist --project-name=web-page-1';
+// const command = 'sudo netlify deploy --dir "dist" --auth $AUTH_TOKEN_NETLIFY --site $SITE_ID_NETLIFY --prod'
+// exec(command, (execError, stdout, stderr) => {
 setInterval(async () => {
     try {
-        // serialized_agent[0][1] = ["hi", "hi"];
-        // console.log(serialized_agent)
-        // Read the file content
         await ensureOriginConfigured();
         const newContent = `export const model = ${util.inspect(serialized_agent, { depth: null })};`;
 
-        // Write the new content to the file using promise-based writeFile
-        // await writeFileAsync(filePath, newContent, 'utf8');
         await writeFileAsync(filePath, JSON.stringify(count), 'utf8');
 
-        // Execute the command after modifying the file
-        // const command = 'npx wrangler pages deploy dist --project-name=web-page-1';
-        // const command = 'sudo netlify deploy --dir "dist" --auth $AUTH_TOKEN_NETLIFY --site $SITE_ID_NETLIFY --prod'
-        // exec(command, (execError, stdout, stderr) => {
-        //     if (execError) {
-        //         console.error(`Error executing command: ${execError.message}`);
-        //         return;
-        //     }
-        //     if (stderr) {
-        //         console.error(`stderr: ${stderr}`);
-        //         return;
-        //     }
-        //     console.log(`stdout: ${stdout}`);
-        // });
-        const indexLockPath = '/opt/render/project/src/.git/index.lock';
+        // Remove the index lock file
+        await git.rm(['/opt/render/project/src/.git/index.lock']);
 
-        // Attempt to remove the index lock file
-        await git.customBinary('rm', indexLockPath);
-        console.log('hi', count)
+        console.log('hi', count);
+
         await git.add('./*');
         await git.commit(`Auto deploy changes in dist directory${count}`);
         await git.push('origin', 'main');
-
     } catch (error) {
         console.error(`Error: ${error.message}`);
     }
-    count++
-}, 20000); // 10 seconds for testing, replace with 7200000 for 7200 seconds
+    count++;
+}, 20000);
 
 app.post('/', (req, res) => {
     const [accept, recommendations] = req.body
