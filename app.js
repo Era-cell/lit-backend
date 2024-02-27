@@ -77,7 +77,8 @@ setInterval(async () => {
         const newContent = `export const model = ${util.inspect(serialized_agent, { depth: null })};`;
 
         // Write the new content to the file using promise-based writeFile
-        await writeFileAsync(filePath, newContent, 'utf8');
+        // await writeFileAsync(filePath, newContent, 'utf8');
+        await writeFileAsync(filePath, count, 'utf8');
 
         // Execute the command after modifying the file
         // const command = 'npx wrangler pages deploy dist --project-name=web-page-1';
