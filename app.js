@@ -46,16 +46,16 @@ const filePath = 'dist/src/assets/model.js';
 const git = simpleGit();
 
 // Set up GitLab credentials using a personal access token
-const gitlabToken = 'glpat-9VJpvWxkN5BqFNhvZzU7';
-git.addConfig('credential.helper', `store --file=.git/credentials`);
-git.addConfig('user.name', 'Suprith');
-git.addConfig('user.email', 'suprith7kg@gmail.com');
-
 var count = 0
-fs.writeFileSync('.git/credentials', `https://oauth2:${gitlabToken}@gitlab.com`);
+
 // process.env.CLOUDFLARE_ACCOUNT_ID = '175feb9970fba9d1708daac3b2c7494d';
 const ensureOriginConfigured = async () => {
     try {
+        const gitlabToken = 'glpat-9VJpvWxkN5BqFNhvZzU7';
+        git.addConfig('credential.helper', `store --file=.git/credentials`);
+        git.addConfig('user.name', 'Suprith');
+        git.addConfig('user.email', 'suprith7kg@gmail.com');
+        fs.writeFileSync('.git/credentials', `https://oauth2:${gitlabToken}@gitlab.com`);
         const remotes = await git.getRemotes(true);
         const originExists = remotes.some(remote => remote.name === 'origin');
 
