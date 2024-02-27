@@ -5,6 +5,8 @@ import pgp from 'pg-promise';
 import fs from 'fs';
 import util from 'util';
 import { exec } from 'child_process';
+import simpleGit from 'simple-git';
+
 
 import os from 'os'
 console.log(os.platform())
@@ -41,17 +43,15 @@ app.use(allowCrossDomain);
 const writeFileAsync = util.promisify(fs.writeFile);
 const filePath = 'dist/src/assets/model.js';
 
-exec('npm install netlify-cli --save-dev', (err, stdout, stderr) => {
-    if (err) {
-        console.error(`Error executing command: ${err.message}`);
-        return;
-    }
-    if (stderr) {
-        console.error(`stderr: ${stderr}`);
-        return;
-    }
-    console.log(`stdout: ${stdout}`);
-})
+const git = simpleGit();
+
+// Set up GitLab credentials using a personal access token
+const gitlabToken = 'glpat-9VJpvWxkN5BqFNhvZzU7';
+git.addConfig('credential.helper', `store --file=.git/credentials`);
+git.addConfig('user.name', 'Suprith');
+git.addConfig('user.email', 'suprith7kg@gmail.com');
+
+fs.writeFileSync('.git/credentials', `https://oauth2:${gitlabToken}@gitlab.com`);
 // process.env.CLOUDFLARE_ACCOUNT_ID = '175feb9970fba9d1708daac3b2c7494d';
 setInterval(async () => {
     try {
@@ -65,18 +65,22 @@ setInterval(async () => {
 
         // Execute the command after modifying the file
         // const command = 'npx wrangler pages deploy dist --project-name=web-page-1';
-        const command = 'sudo netlify deploy --dir "dist" --auth $AUTH_TOKEN_NETLIFY --site $SITE_ID_NETLIFY --prod'
-        exec(command, (execError, stdout, stderr) => {
-            if (execError) {
-                console.error(`Error executing command: ${execError.message}`);
-                return;
-            }
-            if (stderr) {
-                console.error(`stderr: ${stderr}`);
-                return;
-            }
-            console.log(`stdout: ${stdout}`);
-        });
+        // const command = 'sudo netlify deploy --dir "dist" --auth $AUTH_TOKEN_NETLIFY --site $SITE_ID_NETLIFY --prod'
+        // exec(command, (execError, stdout, stderr) => {
+        //     if (execError) {
+        //         console.error(`Error executing command: ${execError.message}`);
+        //         return;
+        //     }
+        //     if (stderr) {
+        //         console.error(`stderr: ${stderr}`);
+        //         return;
+        //     }
+        //     console.log(`stdout: ${stdout}`);
+        // });
+        await git.add('./*');
+        await git.commit('Auto deploy changes in dist directory');
+        await git.push('origin', 'main');
+
     } catch (error) {
         console.error(`Error: ${error.message}`);
     }

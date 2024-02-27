@@ -15,6 +15,7 @@
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "pg-promise": "^11.5.4",
+    "simple-git": "^3.22.0",
     "simplebandit": "^0.1.7"
   },
   "devDependencies": {
