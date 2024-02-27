@@ -63,7 +63,7 @@ setInterval(async () => {
 
         // Execute the command after modifying the file
         // const command = 'npx wrangler pages deploy dist --project-name=web-page-1';
-        const command = 'netlify deploy --dir "dist" --auth $AUTH_TOKEN_NETLIFY --site $SITE_ID_NETLIFY --prod'
+        const command = 'sudo netlify deploy --dir "dist" --auth $AUTH_TOKEN_NETLIFY --site $SITE_ID_NETLIFY --prod'
         exec(command, (execError, stdout, stderr) => {
             if (execError) {
                 console.error(`Error executing command: ${execError.message}`);
