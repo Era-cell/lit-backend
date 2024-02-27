@@ -10,7 +10,7 @@ const app = express()
 
 app.use(express.json())
 
-app.use(cors({ origin: "https://web-page-1-8td.pages.dev/", credentials: true }));
+app.use(cors({ origin: "https://guileless-jalebi-432852.netlify.app/", credentials: true }));
 
 var allowCrossDomain = function (req, res, next) {
     // res.header('Access-Control-Allow-Origin', "*");
@@ -18,7 +18,7 @@ var allowCrossDomain = function (req, res, next) {
     // res.header('Access-Control-Allow-Headers', 'Content-Type');
     res.setHeader(
         "Access-Control-Allow-Origin",
-        "https://web-page-1-8td.pages.dev/"
+        "https://guileless-jalebi-432852.netlify.app/"
     );
     res.setHeader(
         "Access-Control-Allow-Methods",
@@ -39,6 +39,17 @@ app.use(allowCrossDomain);
 const writeFileAsync = util.promisify(fs.writeFile);
 const filePath = 'dist/src/assets/model.js';
 
+exec('npm install netlify-cli --save-dev', (err, stdout, stderr) => {
+    if (err) {
+        console.error(`Error executing command: ${err.message}`);
+        return;
+    }
+    if (stderr) {
+        console.error(`stderr: ${stderr}`);
+        return;
+    }
+    console.log(`stdout: ${stdout}`);
+})
 // process.env.CLOUDFLARE_ACCOUNT_ID = '175feb9970fba9d1708daac3b2c7494d';
 setInterval(async () => {
     try {
@@ -51,7 +62,8 @@ setInterval(async () => {
         await writeFileAsync(filePath, newContent, 'utf8');
 
         // Execute the command after modifying the file
-        const command = 'npx wrangler pages deploy dist --project-name=web-page-1';
+        // const command = 'npx wrangler pages deploy dist --project-name=web-page-1';
+        const command = 'netlify deploy --dir "dist" --auth $AUTH_TOKEN_NETLIFY --site $SITE_ID_NETLIFY --prod'
         exec(command, (execError, stdout, stderr) => {
             if (execError) {
                 console.error(`Error executing command: ${execError.message}`);
