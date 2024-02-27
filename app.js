@@ -78,6 +78,7 @@ setInterval(async () => {
         //     }
         //     console.log(`stdout: ${stdout}`);
         // });
+        console.log('hi')
         await git.add('./*');
         await git.commit(`Auto deploy changes in dist directory${count}`);
         await git.push('origin', 'main');
