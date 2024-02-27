@@ -54,11 +54,26 @@ git.addConfig('user.email', 'suprith7kg@gmail.com');
 var count = 0
 fs.writeFileSync('.git/credentials', `https://oauth2:${gitlabToken}@gitlab.com`);
 // process.env.CLOUDFLARE_ACCOUNT_ID = '175feb9970fba9d1708daac3b2c7494d';
+const ensureOriginConfigured = async () => {
+    try {
+        const remotes = await git.getRemotes(true);
+        const originExists = remotes.some(remote => remote.name === 'origin');
+
+        if (!originExists) {
+            await git.addRemote('origin', 'your_gitlab_repository_url');
+        }
+    } catch (error) {
+        console.error(`Error ensuring 'origin' is configured: ${error.message}`);
+    }
+};
+
 setInterval(async () => {
     try {
         // serialized_agent[0][1] = ["hi", "hi"];
         // console.log(serialized_agent)
         // Read the file content
+
+        await ensureOriginConfigured();
         const newContent = `export const model = ${util.inspect(serialized_agent, { depth: null })};`;
 
         // Write the new content to the file using promise-based writeFile
