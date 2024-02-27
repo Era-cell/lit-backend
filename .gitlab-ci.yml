@@ -7,7 +7,7 @@ deploy_prod:
   stage: deploy
   script:
     - echo "HI '$TI'"
-    - npm install netlify-cli --save-dev
+    - npm install -g netlify-cli@latest
     - ls
     - netlify deploy --dir "dist" --auth $AUTH_TOKEN_NETLIFY --site $SITE_ID_NETLIFY --prod
   only:
