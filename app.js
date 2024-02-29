@@ -79,10 +79,10 @@ setInterval(async () => {
 
         await writeFileAsync(filePath, JSON.stringify(count), 'utf8');
 
-        const indexLockPath = '/opt/render/project/src/.git/index.lock';
+        // const indexLockPath = '/opt/render/project/src/.git/index.lock';
 
-        // Remove the index lock file
-        await exec(`rm -f ${indexLockPath}`);
+        // // Remove the index lock file
+        // await exec(`rm -f ${indexLockPath}`);
 
         console.log('hi', count);
 
