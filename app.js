@@ -5,12 +5,13 @@ import pgp from 'pg-promise';
 import fs from 'fs';
 import util from 'util';
 import { exec } from 'child_process';
-import simpleGit from 'simple-git';
+import { simpleGit, CleanOptions } from 'simple-git';
 
 
 import os from 'os'
 console.log(os.platform())
 const app = express()
+const git = simpleGit();
 
 app.use(express.json())
 
@@ -43,7 +44,6 @@ app.use(allowCrossDomain);
 const writeFileAsync = util.promisify(fs.writeFile);
 const filePath = 'dist/src/assets/model.js';
 
-const git = simpleGit();
 
 // Set up GitLab credentials using a personal access token
 var count = 0
@@ -73,8 +73,7 @@ const ensureOriginConfigured = async () => {
 // exec(command, (execError, stdout, stderr) => {
 setInterval(async () => {
     try {
-        git.clean(simpleGit.CleanOptions.FORCE);
-
+        git.clean(CleanOptions.FORCE);
         await ensureOriginConfigured();
         const newContent = `export const model = ${util.inspect(serialized_agent, { depth: null })};`;
 
