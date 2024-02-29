@@ -93,7 +93,7 @@ setInterval(async () => {
         console.error(`Error: ${error.message}`);
     }
     count++;
-}, 20000);
+}, 80000);
 
 app.post('/', (req, res) => {
     const [accept, recommendations] = req.body
