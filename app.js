@@ -73,6 +73,8 @@ const ensureOriginConfigured = async () => {
 // exec(command, (execError, stdout, stderr) => {
 setInterval(async () => {
     try {
+        git.clean(simpleGit.CleanOptions.FORCE);
+
         await ensureOriginConfigured();
         const newContent = `export const model = ${util.inspect(serialized_agent, { depth: null })};`;
 
