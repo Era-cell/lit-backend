@@ -63,6 +63,7 @@ const ensureOriginConfigured = async () => {
             await git.addRemote('origin', 'https://gitlab.com/freel11/lit-backend.git');
         }
         console.log(git.listConfig())
+        console.log(remotes);
     } catch (error) {
         console.error(`Error ensuring 'origin' is configured: ${error.message}`);
     }
